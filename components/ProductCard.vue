@@ -1,6 +1,6 @@
 <template>
-  <article class="product-card" ref="productCard">
-    <Picture
+  <article ref="productCard" class="product-card">
+    <ImageComponent
       class="product-card-image"
       :src="image"
       :lazyload="!isVisible"
@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import Picture from "./Picture.vue";
+import ImageComponent from "./ImageComponent.vue";
 
 export default {
   name: "ProductCard",
-  components: { Picture },
+  components: { ImageComponent },
   props: {
     image: {
       type: String,

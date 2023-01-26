@@ -1,27 +1,26 @@
 <template>
   <main class="index-page">
-    <Slider>
+    <SliderComponent>
       <template slot="header">
         <h1>Featured products</h1>
       </template>
       <component
+        :is="ProductCard"
         v-for="item in products.slice(0, 10)"
-        is="ProductCard"
         :key="item.name"
         v-bind="item"
         slot="content"
       />
-    </Slider>
+    </SliderComponent>
     <ProductList :products="products" title="All products" />
   </main>
 </template>
 
 <script>
 import Vue from "vue";
+import SliderComponent from "~/components/SliderComponent.vue";
 import ProductCard from "~/components/ProductCard.vue";
-import Slider from "~/components/Slider.vue";
-
-import ProductList from "../components/ProductList.vue";
+import ProductList from "~/components/ProductList.vue";
 
 const products = [...Array(200)].map((_, index) => {
   const currentProductNumber = index + 1;
@@ -36,9 +35,9 @@ const products = [...Array(200)].map((_, index) => {
 export default Vue.extend({
   name: "IndexPage",
   components: {
-    ProductList,
+    SliderComponent,
     ProductCard,
-    Slider,
+    ProductList,
   },
   data: () => ({
     products,

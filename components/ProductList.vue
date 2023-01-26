@@ -1,17 +1,17 @@
 <template>
-  <section class="product-list" v-if="productsLoaded">
-    <header class="product-list-header" v-if="title">
+  <section v-if="productsLoaded" class="product-list">
+    <header v-if="title" class="product-list-header">
       <h1 class="product-list-title">{{ title }}</h1>
     </header>
     <div class="product-list-container">
       <ProductCard
-        ref="productCard"
         v-for="(product, index) in productsLoaded"
+        ref="productCard"
         :key="index"
         v-bind="product"
       />
     </div>
-    <footer class="product-list-footer" v-if="showLoadMore">
+    <footer v-if="showLoadMore" class="product-list-footer">
       <LoadMoreButton
         ref="loadMoreButton"
         class="load-more-button"
@@ -55,12 +55,6 @@ export default {
     page: 1,
     hasLoadedMore: false,
   }),
-  mounted() {
-    this.initializeObserver();
-  },
-  beforeDestroy() {
-    this.observer.disconnect();
-  },
   computed: {
     productsLoaded() {
       return this.products.slice(0, this.page * this.limit);
@@ -68,6 +62,12 @@ export default {
     showLoadMore() {
       return this.productsLoaded.length < this.products.length;
     },
+  },
+  mounted() {
+    this.initializeObserver();
+  },
+  beforeDestroy() {
+    this.observer.disconnect();
   },
   methods: {
     initializeObserver() {

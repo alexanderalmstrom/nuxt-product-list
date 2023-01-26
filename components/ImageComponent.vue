@@ -1,5 +1,5 @@
 <template>
-  <figure class="picture" ref="image">
+  <figure ref="image" class="image">
     <img
       :src="src"
       :alt="alt"
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Picture",
+  name: "ImageComponent",
   props: {
     src: {
       type: String,
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-.picture img {
+.image img {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -51,7 +51,7 @@ export default {
   transition-timing-function: cubic-bezier(0, 0.4, 0.6, 1);
 }
 
-.picture.is-loaded img {
+.image.is-loaded img {
   opacity: 1;
   transform: scale(1);
 }

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Slider",
+  name: "SliderComponent",
   props: {
     items: {
       type: Array,
