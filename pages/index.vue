@@ -5,7 +5,7 @@
         <h1>Featured products</h1>
       </template>
       <component
-        :is="ProductCard"
+        :is="'ProductCard'"
         v-for="item in products.slice(0, 10)"
         :key="item.name"
         v-bind="item"
