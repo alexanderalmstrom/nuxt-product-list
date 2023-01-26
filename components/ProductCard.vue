@@ -1,5 +1,5 @@
 <template>
-  <article ref="productCard" class="product-card">
+  <article class="product-card">
     <ImageComponent
       class="product-card-image"
       :src="image"

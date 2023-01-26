@@ -6,7 +6,7 @@
       </template>
       <component
         :is="'ProductCard'"
-        v-for="item in products.slice(0, 10)"
+        v-for="item in products.slice(0, 52)"
         :key="item.name"
         v-bind="item"
         slot="content"
