@@ -106,7 +106,7 @@ export default {
 }
 
 .product-list-title {
-  font-size: clamp(2rem, 6vw, 8rem);
+  font-size: clamp(2rem, 6vw, 10rem);
 }
 
 .product-list-container {

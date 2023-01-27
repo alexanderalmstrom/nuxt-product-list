@@ -2,7 +2,7 @@
   <main class="index-page">
     <SliderComponent>
       <template slot="header">
-        <h1>Featured products</h1>
+        <h1>Featured</h1>
       </template>
       <component
         :is="'ProductCard'"

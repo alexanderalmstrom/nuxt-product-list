@@ -119,6 +119,7 @@ export default {
 }
 
 .slider-header h1 {
+  font-size: clamp(2rem, 6vw, 10rem);
   margin-bottom: 0;
 }
 
