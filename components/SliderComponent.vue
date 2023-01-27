@@ -108,7 +108,7 @@ export default {
 <style scoped>
 .slider {
   --peak: 1.5rem;
-  --slide-width: calc(75vw - var(--peak));
+  --slide-width: calc(50vw - var(--peak));
 }
 
 .slider-header {
