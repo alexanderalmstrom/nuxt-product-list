@@ -6,7 +6,7 @@
       </template>
       <component
         :is="'ProductCard'"
-        v-for="item in products.slice(0, 52)"
+        v-for="item in products.slice(0, 14)"
         :key="item.name"
         v-bind="item"
         slot="content"
@@ -79,10 +79,12 @@ p {
 }
 
 button {
+  padding: 0;
+  margin: 0;
+  border: 0;
   font-size: inherit;
   color: currentColor;
   background-color: transparent;
-  border: 0;
   appearance: none;
   cursor: pointer;
 }

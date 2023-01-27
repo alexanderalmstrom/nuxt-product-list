@@ -2,7 +2,9 @@
   <section class="slider">
     <header class="slider-header">
       <slot name="header" />
-      <button type="button" @click="handleScroll">Next</button>
+      <div class="slider-controls">
+        <button type="button" @click="handleNext">Next</button>
+      </div>
     </header>
     <div ref="content" class="slider-content">
       <slot name="content" />
@@ -17,6 +19,11 @@ export default {
     observer: undefined,
     visibleItems: [],
   }),
+  computed: {
+    uniqueSortedItems() {
+      return [...new Set(this.visibleItems)].sort((a, b) => a - b);
+    },
+  },
   mounted() {
     this.initializeObserver();
   },
@@ -49,28 +56,34 @@ export default {
             (index) => index !== entryIndex
           );
         }
-
-        this.visibleItems.sort();
       }
     },
-    handleScroll(
+    handleNext(
+      event,
       scrollOptions = {
         behavior: "smooth",
       }
     ) {
+      event.preventDefault();
+
+      const contentRef = this.$refs.content;
       const contentSlot = this.$slots.content;
-      const visibleItems = Array.from(new Set(this.visibleItems));
-      const sortedVisibleItems = visibleItems.sort((a, b) => a - b);
-      const nextSlideIndex = sortedVisibleItems[visibleItems.length - 1];
-      const nextSlideItem = contentSlot[nextSlideIndex + visibleItems.length];
+      const nextSlideIndex = this.uniqueSortedItems[0];
+      const nextSlideItem =
+        contentSlot[nextSlideIndex + this.uniqueSortedItems.length];
 
       if (!nextSlideItem) {
         const lastSlideItem = contentSlot[contentSlot.length - 1];
-        lastSlideItem.elm.scrollIntoView(scrollOptions);
+        const offsetLeft = lastSlideItem.elm.offsetLeft;
+
+        contentRef.scrollTo({ left: offsetLeft, ...scrollOptions });
+
         return;
       }
 
-      nextSlideItem.elm.scrollIntoView(scrollOptions);
+      const offsetLeft = nextSlideItem.elm.offsetLeft;
+
+      contentRef.scrollTo({ left: offsetLeft, ...scrollOptions });
     },
   },
 };
@@ -84,6 +97,20 @@ export default {
 
 .slider-header {
   margin: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slider-header h1 {
+  margin-bottom: 0;
+}
+
+.slider-controls button {
+  font-size: 0.875rem;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid #000000;
 }
 
 .slider-content {
@@ -106,6 +133,7 @@ export default {
 }
 
 .slider-content ::v-deep > * {
+  scroll-snap-align: start;
   min-width: var(--slide-width);
   flex-grow: 1;
   flex-shrink: 0;
