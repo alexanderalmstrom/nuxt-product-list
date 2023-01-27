@@ -3,7 +3,8 @@
     <header class="slider-header">
       <slot name="header" />
       <div class="slider-controls">
-        <button type="button" @click="handleNext">Next</button>
+        <button type="button" @click="handleScroll('left')">Previous</button>
+        <button type="button" @click="handleScroll('right')">Next</button>
       </div>
     </header>
     <div ref="content" class="slider-content">
@@ -18,6 +19,9 @@ export default {
   data: () => ({
     observer: undefined,
     visibleItems: [],
+    scrollOptions: {
+      behavior: "smooth",
+    },
   }),
   computed: {
     uniqueSortedItems() {
@@ -58,32 +62,38 @@ export default {
         }
       }
     },
-    handleNext(
-      event,
-      scrollOptions = {
-        behavior: "smooth",
-      }
-    ) {
-      event.preventDefault();
-
+    handleScroll(direction) {
+      let newSlideItem;
       const contentRef = this.$refs.content;
       const contentSlot = this.$slots.content;
-      const nextSlideIndex = this.uniqueSortedItems[0];
-      const nextSlideItem =
-        contentSlot[nextSlideIndex + this.uniqueSortedItems.length];
+      const newSlideIndex = this.uniqueSortedItems[0];
+      const firstSlideItem = contentSlot[0];
+      const lastSlideItem = contentSlot[contentSlot.length - 1];
 
-      if (!nextSlideItem) {
-        const lastSlideItem = contentSlot[contentSlot.length - 1];
-        const offsetLeft = lastSlideItem.elm.offsetLeft;
+      if (direction === "right") {
+        newSlideItem =
+          contentSlot[newSlideIndex + this.uniqueSortedItems.length];
 
-        contentRef.scrollTo({ left: offsetLeft, ...scrollOptions });
-
-        return;
+        if (!newSlideItem) {
+          const offsetLeft = lastSlideItem.elm.offsetLeft;
+          contentRef.scrollTo({ left: offsetLeft, ...this.scrollOptions });
+          return;
+        }
       }
 
-      const offsetLeft = nextSlideItem.elm.offsetLeft;
+      if (direction === "left") {
+        newSlideItem =
+          contentSlot[newSlideIndex - this.uniqueSortedItems.length];
 
-      contentRef.scrollTo({ left: offsetLeft, ...scrollOptions });
+        if (!newSlideItem) {
+          const offsetLeft = firstSlideItem.elm.offsetLeft;
+          contentRef.scrollTo({ left: offsetLeft, ...this.scrollOptions });
+          return;
+        }
+      }
+
+      const offsetLeft = newSlideItem.elm.offsetLeft;
+      contentRef.scrollTo({ left: offsetLeft, ...this.scrollOptions });
     },
   },
 };
