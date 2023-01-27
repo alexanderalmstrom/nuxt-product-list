@@ -78,7 +78,7 @@ export default {
 }
 
 .product-card-name {
-  font-size: 1em;
+  font-size: clamp(1em, 1vw, 1.125rem);
   margin-bottom: 0.3em;
 }
 

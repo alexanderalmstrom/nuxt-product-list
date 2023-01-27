@@ -112,14 +112,14 @@ export default {
 }
 
 .slider-header {
-  margin: 1.5rem;
+  margin: clamp(1.5rem, 3vw, 2rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .slider-header h1 {
-  font-size: clamp(2rem, 6vw, 10rem);
+  font-size: clamp(2rem, 6vw, 3rem);
   margin-bottom: 0;
 }
 
@@ -129,7 +129,7 @@ export default {
 }
 
 .slider-controls button {
-  font-size: 0.875rem;
+  font-size: clamp(0.875rem, 1vw, 1.125rem);
   padding-top: 0.2em;
   padding-bottom: 0.2em;
   border-bottom: 1px solid #000000;

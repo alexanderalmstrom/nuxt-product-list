@@ -102,7 +102,7 @@ export default {
 }
 
 .product-list-header {
-  margin: clamp(1.5rem, 3vw, 3rem);
+  margin: clamp(1.5rem, 3vw, 2rem);
 }
 
 .product-list-title {

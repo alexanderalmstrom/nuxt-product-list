@@ -50,6 +50,7 @@ body {
   margin: 0;
   font-family: -apple-system, system-ui, sans-serif;
   line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
 img {
@@ -87,5 +88,6 @@ button {
   background-color: transparent;
   appearance: none;
   cursor: pointer;
+  letter-spacing: inherit;
 }
 </style>
