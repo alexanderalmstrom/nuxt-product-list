@@ -3,8 +3,8 @@
     <header class="slider-header">
       <slot name="header" />
       <div class="slider-controls">
-        <button type="button" @click="handleScroll('left')">Previous</button>
-        <button type="button" @click="handleScroll('right')">Next</button>
+        <button type="button" @click="scrollTo('left')">Previous</button>
+        <button type="button" @click="scrollTo('right')">Next</button>
       </div>
     </header>
     <div ref="content" class="slider-content">
@@ -62,21 +62,21 @@ export default {
         }
       }
     },
-    handleScroll(direction) {
+    scrollTo(direction) {
       let newSlideItem;
-      const contentRef = this.$refs.content;
+
       const contentSlot = this.$slots.content;
       const newSlideIndex = this.uniqueSortedItems[0];
-      const firstSlideItem = contentSlot[0];
-      const lastSlideItem = contentSlot[contentSlot.length - 1];
 
       if (direction === "right") {
         newSlideItem =
           contentSlot[newSlideIndex + this.uniqueSortedItems.length];
 
         if (!newSlideItem) {
-          const offsetLeft = lastSlideItem.elm.offsetLeft;
-          contentRef.scrollTo({ left: offsetLeft, ...this.scrollOptions });
+          const lastSlideItem = contentSlot[contentSlot.length - 1];
+
+          this.initializeScroll({ element: lastSlideItem.elm });
+
           return;
         }
       }
@@ -86,14 +86,20 @@ export default {
           contentSlot[newSlideIndex - this.uniqueSortedItems.length];
 
         if (!newSlideItem) {
-          const offsetLeft = firstSlideItem.elm.offsetLeft;
-          contentRef.scrollTo({ left: offsetLeft, ...this.scrollOptions });
+          const firstSlideItem = contentSlot[0];
+
+          this.initializeScroll({ element: firstSlideItem.elm });
+
           return;
         }
       }
 
-      const offsetLeft = newSlideItem.elm.offsetLeft;
-      contentRef.scrollTo({ left: offsetLeft, ...this.scrollOptions });
+      this.initializeScroll({ element: newSlideItem.elm });
+    },
+    initializeScroll({ element }) {
+      const contentRef = this.$refs.content;
+
+      contentRef.scrollTo({ left: element.offsetLeft, ...this.scrollOptions });
     },
   },
 };
@@ -114,6 +120,11 @@ export default {
 
 .slider-header h1 {
   margin-bottom: 0;
+}
+
+.slider-controls {
+  display: flex;
+  column-gap: 1rem;
 }
 
 .slider-controls button {
