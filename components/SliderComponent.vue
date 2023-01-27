@@ -107,8 +107,8 @@ export default {
 
 <style scoped>
 .slider {
-  --peak: 1.5rem;
-  --slide-width: calc(50vw - var(--peak));
+  --slide-item-peak: 2vw;
+  --slide-item-width: calc(50vw - var(--slide-item-peak));
 }
 
 .slider-header {
@@ -156,14 +156,15 @@ export default {
 
 .slider-content ::v-deep > * {
   scroll-snap-align: start;
-  min-width: var(--slide-width);
+  min-width: var(--slide-item-width);
   flex-grow: 1;
   flex-shrink: 0;
 }
 
 @media (min-width: 1024px) {
-  .slider-content ::v-deep > * {
-    --slide-width: calc(25vw - var(--peak));
+  .slider {
+    --slide-item-peak: 1vw;
+    --slide-item-width: calc(25vw - var(--slide-item-peak));
   }
 }
 </style>
