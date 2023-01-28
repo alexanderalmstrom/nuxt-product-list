@@ -99,11 +99,12 @@ button {
   border: 0;
   appearance: none;
   cursor: pointer;
-  user-select: none;
+  touch-action: manipulation;
   font-size: inherit;
   background-color: transparent;
   color: currentColor;
   letter-spacing: inherit;
+  -webkit-tap-highlight-color: #000000;
 }
 
 .sr-only {
