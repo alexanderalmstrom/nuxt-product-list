@@ -19,9 +19,11 @@ export default {
   data: () => ({
     intersectionObserver: undefined,
     resizeObserver: undefined,
-    breakpointItems: undefined,
-    peakItems: undefined,
-    visibleItems: [],
+    sliderOptions: {
+      items: undefined,
+      peak: undefined,
+    },
+    visibleIndexes: [],
     scrollOptions: {
       behavior: "smooth",
     },
@@ -33,13 +35,13 @@ export default {
     },
   },
   computed: {
-    uniqueSortedItems() {
-      return [...new Set(this.visibleItems)].sort((a, b) => a - b);
+    uniqueSortedItems({ visibleIndexes }) {
+      return [...new Set(visibleIndexes)].sort((a, b) => a - b);
     },
-    sliderStyles() {
+    sliderStyles({ sliderOptions }) {
       return {
-        "--items": this.breakpointItems,
-        "--peak": this.peakItems,
+        "--items": sliderOptions.items,
+        "--peak": sliderOptions.peak,
       };
     },
   },
@@ -65,11 +67,11 @@ export default {
 
         if (matches) {
           if (breakpoint.items) {
-            this.breakpointItems = breakpoint.items;
+            this.sliderOptions.items = breakpoint.items;
           }
 
           if (breakpoint.peak) {
-            this.peakItems = breakpoint.peak;
+            this.sliderOptions.peak = breakpoint.peak;
           }
         }
       }
@@ -99,9 +101,9 @@ export default {
         );
 
         if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          this.visibleItems.push(entryIndex);
+          this.visibleIndexes.push(entryIndex);
         } else {
-          this.visibleItems = this.visibleItems.filter(
+          this.visibleIndexes = this.visibleIndexes.filter(
             (index) => index !== entryIndex
           );
         }
