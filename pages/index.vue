@@ -4,11 +4,13 @@
       :breakpoints="[
         {
           media: '(min-width: 320px)',
-          items: 2,
+          width: '50vw',
+          peak: '2vw',
         },
         {
           media: '(min-width: 1024px)',
-          items: 4,
+          width: '25vw',
+          peak: '1vw',
         },
       ]"
     >

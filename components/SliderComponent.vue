@@ -32,7 +32,7 @@ export default {
     intersectionObserver: undefined,
     resizeObserver: undefined,
     sliderOptions: {
-      items: undefined,
+      width: undefined,
       peak: undefined,
     },
     visibleIndexes: [],
@@ -41,6 +41,14 @@ export default {
     },
   }),
   props: {
+    width: {
+      type: String,
+      default: undefined,
+    },
+    peak: {
+      type: String,
+      default: undefined,
+    },
     breakpoints: {
       type: Array,
       default: () => [],
@@ -52,8 +60,8 @@ export default {
     },
     sliderStyles({ sliderOptions }) {
       return {
-        "--items": sliderOptions.items,
-        "--peak": sliderOptions.peak,
+        "--width": sliderOptions.width || this.width,
+        "--peak": sliderOptions.peak || this.peak,
       };
     },
   },
@@ -67,10 +75,18 @@ export default {
   },
   methods: {
     initializeResizeObserver() {
+      if (!this.breakpoints.length) {
+        return;
+      }
+
       this.resizeObserver = new ResizeObserver(this.handleResizeObserve);
       this.resizeObserver.observe(this.$refs.content);
     },
     destroyResizeObserver() {
+      if (!this.resizeObserver) {
+        return;
+      }
+
       this.resizeObserver.disconnect();
     },
     handleResizeObserve() {
@@ -78,8 +94,8 @@ export default {
         const { matches } = window.matchMedia(breakpoint.media);
 
         if (matches) {
-          if (breakpoint.items) {
-            this.sliderOptions.items = breakpoint.items;
+          if (breakpoint.width) {
+            this.sliderOptions.width = breakpoint.width;
           }
 
           if (breakpoint.peak) {
@@ -171,9 +187,8 @@ export default {
 
 <style scoped>
 .slider {
-  --peak: 4vw;
-  --slide-peak: calc(var(--peak) / var(--items));
-  --slide-width: calc(100vw / var(--items) - var(--slide-peak));
+  --width: 100vw;
+  --peak: 0vw;
 }
 
 .slider-header {
@@ -243,7 +258,7 @@ export default {
 
 .slider-content ::v-deep > * {
   scroll-snap-align: start;
-  min-width: var(--slide-width, 100vw);
+  min-width: calc(var(--width) - var(--peak));
   flex-grow: 1;
   flex-shrink: 0;
 }
