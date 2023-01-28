@@ -94,11 +94,24 @@ button {
   padding: 0;
   margin: 0;
   border: 0;
-  font-size: inherit;
-  color: currentColor;
-  background-color: transparent;
   appearance: none;
   cursor: pointer;
+  user-select: none;
+  font-size: inherit;
+  background-color: transparent;
+  color: currentColor;
   letter-spacing: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 </style>

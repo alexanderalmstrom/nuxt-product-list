@@ -3,8 +3,20 @@
     <header class="slider-header">
       <slot name="header" />
       <div class="slider-controls">
-        <button type="button" @click="handleScrollTo('left')">Previous</button>
-        <button type="button" @click="handleScrollTo('right')">Next</button>
+        <button
+          class="slider-button previous-button"
+          type="button"
+          @click="handleScrollTo('left')"
+        >
+          <span class="sr-only">Previous</span>
+        </button>
+        <button
+          class="slider-button next-button"
+          type="button"
+          @click="handleScrollTo('right')"
+        >
+          <span class="sr-only">Next</span>
+        </button>
       </div>
     </header>
     <div ref="content" class="slider-content">
@@ -177,15 +189,37 @@ export default {
 }
 
 .slider-controls {
-  display: flex;
-  column-gap: 1rem;
+  width: 3rem;
+  position: relative;
 }
 
-.slider-controls button {
-  font-size: clamp(0.875rem, 1vw, 1.125rem);
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  border-bottom: 1px solid #000000;
+.slider-button {
+  font-size: 0.8rem;
+  width: 1em;
+  height: 1em;
+  border-top: 0.125em solid #000000;
+  border-right: 0.125em solid #000000;
+  position: absolute;
+}
+
+.slider-button:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg) scale(2);
+}
+
+.next-button {
+  right: 0.125em;
+  transform: translate(0, -50%) rotate(45deg);
+}
+
+.previous-button {
+  left: 0.125em;
+  transform: translate(0, -50%) rotate(-135deg);
 }
 
 .slider-content {
