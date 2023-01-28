@@ -210,7 +210,7 @@ export default {
 }
 
 .slider-header h1 {
-  font-size: clamp(2rem, 6vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   margin-bottom: 0;
 }
 
