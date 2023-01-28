@@ -1,6 +1,7 @@
 <template>
   <main class="index-page">
     <SliderComponent
+      gap="1px"
       :breakpoints="[
         {
           media: '(min-width: 320px)',

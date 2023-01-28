@@ -34,6 +34,7 @@ export default {
     sliderOptions: {
       width: undefined,
       peak: undefined,
+      gap: undefined,
     },
     visibleIndexes: [],
     scrollOptions: {
@@ -49,6 +50,10 @@ export default {
       type: String,
       default: undefined,
     },
+    gap: {
+      type: String,
+      default: undefined,
+    },
     breakpoints: {
       type: Array,
       default: () => [],
@@ -60,8 +65,9 @@ export default {
     },
     sliderStyles({ sliderOptions }) {
       return {
-        "--width": sliderOptions.width || this.width,
-        "--peak": sliderOptions.peak || this.peak,
+        "--width": sliderOptions.width ?? this.width,
+        "--peak": sliderOptions.peak ?? this.peak,
+        "--gap": sliderOptions.gap ?? this.gap,
       };
     },
   },
@@ -100,6 +106,10 @@ export default {
 
           if (breakpoint.peak) {
             this.sliderOptions.peak = breakpoint.peak;
+          }
+
+          if (breakpoint.gap) {
+            this.sliderOptions.gap = breakpoint.gap;
           }
         }
       }
@@ -189,6 +199,7 @@ export default {
 .slider {
   --width: 100vw;
   --peak: 0vw;
+  --gap: 0;
 }
 
 .slider-header {
@@ -239,7 +250,7 @@ export default {
 
 .slider-content {
   display: flex;
-  gap: 1px;
+  gap: var(--gap);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
