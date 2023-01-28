@@ -110,31 +110,29 @@ export default {
       }
     },
     handleScrollTo(direction) {
-      let newSlideItem;
+      let targetItem;
       const contentSlot = this.$slots.content;
       const newSlideIndex = this.uniqueSortedItems[0];
 
       if (direction === "right") {
-        newSlideItem =
-          contentSlot[newSlideIndex + this.uniqueSortedItems.length];
+        targetItem = contentSlot[newSlideIndex + this.uniqueSortedItems.length];
 
-        if (!newSlideItem) {
+        if (!targetItem) {
           this.scrollToEnd();
           return;
         }
       }
 
       if (direction === "left") {
-        newSlideItem =
-          contentSlot[newSlideIndex - this.uniqueSortedItems.length];
+        targetItem = contentSlot[newSlideIndex - this.uniqueSortedItems.length];
 
-        if (!newSlideItem) {
+        if (!targetItem) {
           this.scrollToStart();
           return;
         }
       }
 
-      this.scrollToElement({ element: newSlideItem.elm });
+      this.scrollToElement({ element: targetItem.elm });
     },
     scrollToStart() {
       const contentRef = this.$refs.content;
@@ -145,8 +143,8 @@ export default {
     },
     scrollToEnd() {
       const contentSlot = this.$slots.content;
-      const lastSlideItem = contentSlot[contentSlot.length - 1];
-      this.scrollToElement({ element: lastSlideItem.elm });
+      const lastItem = contentSlot[contentSlot.length - 1];
+      this.scrollToElement({ element: lastItem.elm });
     },
     scrollToElement({ element }) {
       const contentRef = this.$refs.content;
