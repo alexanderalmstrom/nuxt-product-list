@@ -104,6 +104,7 @@ button {
   background-color: transparent;
   color: currentColor;
   letter-spacing: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .sr-only {
