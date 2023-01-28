@@ -62,8 +62,8 @@ export default {
 <style scoped>
 .product-card {
   font-size: 0.875rem;
-  box-shadow: 0 0 0 1px #000;
-  background-color: #ffffff;
+  box-shadow: 0 0 0 1px var(--color-black);
+  background-color: var(--color-white);
 }
 
 .product-card-image {

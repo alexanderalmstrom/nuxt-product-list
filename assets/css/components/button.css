@@ -1,0 +1,9 @@
+button {
+  touch-action: manipulation;
+  font-size: inherit;
+  background-color: transparent;
+  color: currentColor;
+  letter-spacing: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}

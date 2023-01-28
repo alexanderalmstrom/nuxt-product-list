@@ -223,8 +223,10 @@ export default {
   font-size: 0.8rem;
   width: 1em;
   height: 1em;
-  border-top: 0.125em solid #000000;
-  border-right: 0.125em solid #000000;
+  border-top-width: 0.125em;
+  border-right-width: 0.125em;
+  border-style: solid;
+  border-color: var(--color-black);
   position: absolute;
 }
 
@@ -254,9 +256,10 @@ export default {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  border-color: #000000;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: var(--color-black);
 }
 
 .slider-content > * {

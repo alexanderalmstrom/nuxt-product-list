@@ -98,7 +98,7 @@ export default {
 
 <style scoped>
 .product-list {
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid var(--color-black);
 }
 
 .product-list-header {
