@@ -1,10 +1,10 @@
 <template>
-  <section class="slider">
+  <section class="slider" :style="sliderStyles">
     <header class="slider-header">
       <slot name="header" />
       <div class="slider-controls">
-        <button type="button" @click="scrollTo('left')">Previous</button>
-        <button type="button" @click="scrollTo('right')">Next</button>
+        <button type="button" @click="handleScrollTo('left')">Previous</button>
+        <button type="button" @click="handleScrollTo('right')">Next</button>
       </div>
     </header>
     <div ref="content" class="slider-content">
@@ -17,35 +17,80 @@
 export default {
   name: "SliderComponent",
   data: () => ({
-    observer: undefined,
+    intersectionObserver: undefined,
+    resizeObserver: undefined,
+    breakpointItems: undefined,
+    peakItems: undefined,
     visibleItems: [],
     scrollOptions: {
       behavior: "smooth",
     },
   }),
+  props: {
+    breakpoints: {
+      type: Array,
+      default: () => [],
+    },
+  },
   computed: {
     uniqueSortedItems() {
       return [...new Set(this.visibleItems)].sort((a, b) => a - b);
     },
+    sliderStyles() {
+      return {
+        "--items": this.breakpointItems,
+        "--peak": this.peakItems,
+      };
+    },
   },
   mounted() {
-    this.initializeObserver();
+    this.initializeIntersectionObserver();
+    this.initializeResizeObserver();
   },
   beforeDestroy() {
-    this.observer.disconnect();
+    this.destroyIntersectionObserver();
+    this.destroyResizeObserver();
   },
   methods: {
-    initializeObserver() {
-      this.observer = new IntersectionObserver(this.handleObserve, {
-        root: this.$el,
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      });
+    initializeResizeObserver() {
+      this.resizeObserver = new ResizeObserver(this.handleResizeObserve);
+      this.resizeObserver.observe(this.$refs.content);
+    },
+    destroyResizeObserver() {
+      this.resizeObserver.disconnect();
+    },
+    handleResizeObserve() {
+      for (const breakpoint of this.breakpoints) {
+        const { matches } = window.matchMedia(breakpoint.media);
+
+        if (matches) {
+          if (breakpoint.items) {
+            this.breakpointItems = breakpoint.items;
+          }
+
+          if (breakpoint.peak) {
+            this.peakItems = breakpoint.peak;
+          }
+        }
+      }
+    },
+    initializeIntersectionObserver() {
+      this.intersectionObserver = new IntersectionObserver(
+        this.handleIntersectionObserve,
+        {
+          root: this.$el,
+          threshold: [0, 0.25, 0.5, 0.75, 1],
+        }
+      );
 
       this.$slots.content.forEach((item) => {
-        this.observer.observe(item.elm);
+        this.intersectionObserver.observe(item.elm);
       });
     },
-    handleObserve(entries) {
+    destroyIntersectionObserver() {
+      this.resizeObserver.disconnect();
+    },
+    handleIntersectionObserve(entries) {
       const contentSlot = this.$slots.content;
 
       for (const entry of entries) {
@@ -62,9 +107,8 @@ export default {
         }
       }
     },
-    scrollTo(direction) {
+    handleScrollTo(direction) {
       let newSlideItem;
-
       const contentSlot = this.$slots.content;
       const newSlideIndex = this.uniqueSortedItems[0];
 
@@ -73,10 +117,7 @@ export default {
           contentSlot[newSlideIndex + this.uniqueSortedItems.length];
 
         if (!newSlideItem) {
-          const lastSlideItem = contentSlot[contentSlot.length - 1];
-
-          this.initializeScroll({ element: lastSlideItem.elm });
-
+          this.scrollToEnd();
           return;
         }
       }
@@ -86,20 +127,31 @@ export default {
           contentSlot[newSlideIndex - this.uniqueSortedItems.length];
 
         if (!newSlideItem) {
-          const firstSlideItem = contentSlot[0];
-
-          this.initializeScroll({ element: firstSlideItem.elm });
-
+          this.scrollToStart();
           return;
         }
       }
 
-      this.initializeScroll({ element: newSlideItem.elm });
+      this.scrollToElement({ element: newSlideItem.elm });
     },
-    initializeScroll({ element }) {
+    scrollToStart() {
       const contentRef = this.$refs.content;
-
-      contentRef.scrollTo({ left: element.offsetLeft, ...this.scrollOptions });
+      contentRef.scrollTo({
+        left: 0,
+        ...this.scrollOptions,
+      });
+    },
+    scrollToEnd() {
+      const contentSlot = this.$slots.content;
+      const lastSlideItem = contentSlot[contentSlot.length - 1];
+      this.scrollToElement({ element: lastSlideItem.elm });
+    },
+    scrollToElement({ element }) {
+      const contentRef = this.$refs.content;
+      contentRef.scrollTo({
+        left: element.offsetLeft,
+        ...this.scrollOptions,
+      });
     },
   },
 };
@@ -107,8 +159,9 @@ export default {
 
 <style scoped>
 .slider {
-  --slide-item-peak: 2vw;
-  --slide-item-width: calc(50vw - var(--slide-item-peak));
+  --peak: 4vw;
+  --slide-peak: calc(var(--peak) / var(--items));
+  --slide-width: calc(100vw / var(--items) - var(--slide-peak));
 }
 
 .slider-header {
@@ -156,15 +209,8 @@ export default {
 
 .slider-content ::v-deep > * {
   scroll-snap-align: start;
-  min-width: var(--slide-item-width);
+  min-width: var(--slide-width, 100vw);
   flex-grow: 1;
   flex-shrink: 0;
-}
-
-@media (min-width: 1024px) {
-  .slider {
-    --slide-item-peak: 1vw;
-    --slide-item-width: calc(25vw - var(--slide-item-peak));
-  }
 }
 </style>

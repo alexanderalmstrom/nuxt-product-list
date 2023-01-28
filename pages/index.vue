@@ -1,6 +1,17 @@
 <template>
   <main class="index-page">
-    <SliderComponent>
+    <SliderComponent
+      :breakpoints="[
+        {
+          media: '(min-width: 320px)',
+          items: 2,
+        },
+        {
+          media: '(min-width: 1024px)',
+          items: 4,
+        },
+      ]"
+    >
       <template slot="header">
         <h1>Featured</h1>
       </template>
