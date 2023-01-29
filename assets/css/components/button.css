@@ -5,5 +5,11 @@ button {
   color: currentColor;
   letter-spacing: inherit;
   cursor: pointer;
+  transition: opacity 200ms ease-out;
   -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  opacity: 0.25;
+  pointer-events: none;
 }

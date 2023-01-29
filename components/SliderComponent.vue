@@ -4,16 +4,18 @@
       <slot name="header" />
       <div class="slider-controls">
         <button
-          class="slider-button previous-button"
+          class="slider-button button-previous"
           type="button"
           @click="handleScrollTo('left')"
+          :disabled="isStart"
         >
           <span class="sr-only">Previous</span>
         </button>
         <button
-          class="slider-button next-button"
+          class="slider-button button-next"
           type="button"
           @click="handleScrollTo('right')"
+          :disabled="isEnd"
         >
           <span class="sr-only">Next</span>
         </button>
@@ -36,10 +38,12 @@ export default {
       peak: undefined,
       gap: undefined,
     },
-    visibleIndexes: [],
     scrollOptions: {
       behavior: "smooth",
     },
+    indexInView: [],
+    isStart: true,
+    isEnd: false,
   }),
   props: {
     width: {
@@ -60,8 +64,8 @@ export default {
     },
   },
   computed: {
-    uniqueSortedIndexes({ visibleIndexes }) {
-      return [...new Set(visibleIndexes)].sort((a, b) => a - b);
+    uniqueSortedIndexes({ indexInView }) {
+      return [...new Set(indexInView)].sort((a, b) => a - b);
     },
     sliderStyles({
       sliderOptions: { width = this.width, peak = this.peak, gap = this.gap },
@@ -141,16 +145,19 @@ export default {
         );
 
         if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          this.visibleIndexes.push(entryIndex);
+          this.indexInView.push(entryIndex);
         } else {
-          this.visibleIndexes = this.visibleIndexes.filter(
+          this.indexInView = this.indexInView.filter(
             (index) => index !== entryIndex
           );
         }
       }
+
+      this.updateControls();
     },
     handleScrollTo(direction) {
       let targetItem;
+
       const contentSlot = this.$slots.content;
       const newSlideIndex = this.uniqueSortedIndexes[0];
 
@@ -178,6 +185,7 @@ export default {
     },
     scrollToStart() {
       const contentRef = this.$refs.content;
+
       contentRef.scrollTo({
         left: 0,
         ...this.scrollOptions,
@@ -186,14 +194,22 @@ export default {
     scrollToEnd() {
       const contentSlot = this.$slots.content;
       const lastItem = contentSlot[contentSlot.length - 1];
+
       this.scrollToElement({ element: lastItem.elm });
     },
     scrollToElement({ element }) {
       const contentRef = this.$refs.content;
+
       contentRef.scrollTo({
         left: element.offsetLeft,
         ...this.scrollOptions,
       });
+    },
+    updateControls() {
+      const contentSlot = this.$slots.content;
+
+      this.isStart = this.indexInView.includes(0) === true;
+      this.isEnd = this.indexInView.includes(contentSlot.length - 1) === true;
     },
   },
 };
@@ -244,12 +260,12 @@ export default {
   transform: translate(-50%, -50%) rotate(45deg) scale(2);
 }
 
-.next-button {
+.button-next {
   right: 0.125em;
   transform: translate(0, -50%) rotate(45deg);
 }
 
-.previous-button {
+.button-previous {
   left: 0.125em;
   transform: translate(0, -50%) rotate(-135deg);
 }
