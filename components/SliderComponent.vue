@@ -126,7 +126,11 @@ export default {
       });
     },
     destroyIntersectionObserver() {
-      this.resizeObserver.disconnect();
+      if (!this.intersectionObserver) {
+        return;
+      }
+
+      this.intersectionObserver.disconnect();
     },
     handleIntersectionObserve(entries) {
       const contentSlot = this.$slots.content;
