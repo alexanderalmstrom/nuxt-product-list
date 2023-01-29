@@ -63,11 +63,13 @@ export default {
     uniqueSortedItems({ visibleIndexes }) {
       return [...new Set(visibleIndexes)].sort((a, b) => a - b);
     },
-    sliderStyles({ sliderOptions }) {
+    sliderStyles({
+      sliderOptions: { width = this.width, peak = this.peak, gap = this.gap },
+    }) {
       return {
-        "--width": sliderOptions.width ?? this.width,
-        "--peak": sliderOptions.peak ?? this.peak,
-        "--gap": sliderOptions.gap ?? this.gap,
+        "--width": width,
+        "--peak": peak,
+        "--gap": gap,
       };
     },
   },
@@ -99,18 +101,14 @@ export default {
       for (const breakpoint of this.breakpoints) {
         const { matches } = window.matchMedia(breakpoint.media);
 
-        if (matches) {
-          if (breakpoint.width) {
-            this.sliderOptions.width = breakpoint.width;
-          }
+        if (!matches) {
+          return;
+        }
 
-          if (breakpoint.peak) {
-            this.sliderOptions.peak = breakpoint.peak;
-          }
-
-          if (breakpoint.gap) {
-            this.sliderOptions.gap = breakpoint.gap;
-          }
+        for (const key in breakpoint) {
+          Object.assign(this.sliderOptions, {
+            [key]: breakpoint[key] || this.sliderOptions[key],
+          });
         }
       }
     },
