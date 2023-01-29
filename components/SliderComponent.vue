@@ -60,7 +60,7 @@ export default {
     },
   },
   computed: {
-    uniqueSortedItems({ visibleIndexes }) {
+    uniqueSortedIndexes({ visibleIndexes }) {
       return [...new Set(visibleIndexes)].sort((a, b) => a - b);
     },
     sliderStyles({
@@ -148,10 +148,11 @@ export default {
     handleScrollTo(direction) {
       let targetItem;
       const contentSlot = this.$slots.content;
-      const newSlideIndex = this.uniqueSortedItems[0];
+      const newSlideIndex = this.uniqueSortedIndexes[0];
 
       if (direction === "right") {
-        targetItem = contentSlot[newSlideIndex + this.uniqueSortedItems.length];
+        targetItem =
+          contentSlot[newSlideIndex + this.uniqueSortedIndexes.length];
 
         if (!targetItem) {
           this.scrollToEnd();
@@ -160,7 +161,8 @@ export default {
       }
 
       if (direction === "left") {
-        targetItem = contentSlot[newSlideIndex - this.uniqueSortedItems.length];
+        targetItem =
+          contentSlot[newSlideIndex - this.uniqueSortedIndexes.length];
 
         if (!targetItem) {
           this.scrollToStart();
