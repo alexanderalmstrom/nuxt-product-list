@@ -31,17 +31,17 @@
 export default {
   name: "SliderComponent",
   props: {
+    gap: {
+      type: String,
+      default: "0rem",
+    },
     width: {
       type: String,
       default: "100vw",
     },
-    peak: {
+    peek: {
       type: String,
       default: "0vw",
-    },
-    gap: {
-      type: String,
-      default: "0rem",
     },
     breakpoints: {
       type: Array,
@@ -52,9 +52,9 @@ export default {
     intersectionObserver: undefined,
     resizeObserver: undefined,
     sliderOptions: {
-      width: undefined,
-      peak: undefined,
       gap: undefined,
+      width: undefined,
+      peek: undefined,
     },
     scrollOptions: {
       behavior: "smooth",
@@ -65,12 +65,12 @@ export default {
   }),
   computed: {
     sliderStyles({
-      sliderOptions: { width = this.width, peak = this.peak, gap = this.gap },
+      sliderOptions: { gap = this.gap, width = this.width, peek = this.peek },
     }) {
       return {
-        "--width": width,
-        "--peak": peak,
-        "--gap": gap,
+        "--slider-gap": gap,
+        "--slide-item-width": width,
+        "--slide-item-peek": peek,
       };
     },
   },
@@ -211,20 +211,11 @@ export default {
 <style scoped>
 .slider-scroll {
   display: flex;
-  gap: var(--gap);
+  gap: var(--slider-gap);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-}
-
-.slider-scroll > * {
-  scroll-snap-align: start;
 }
 
 .slider-scroll ::v-deep > * {
-  scroll-snap-align: start;
-  min-width: calc(var(--width) - var(--peak));
-  flex-grow: 1;
-  flex-shrink: 0;
+  min-width: calc(var(--slide-item-width) - var(--slide-item-peek));
 }
 </style>
