@@ -140,13 +140,10 @@ export default {
         const entry = contentSlot.find((element) => element.elm === target);
         const index = contentSlot.indexOf(entry);
 
-        switch (true) {
-          case isIntersecting && intersectionRatio > 0.5:
-            this.itemsInView.add(index);
-            break;
-          default:
-            this.itemsInView.delete(index);
-            break;
+        if (isIntersecting && intersectionRatio > 0.5) {
+          this.itemsInView.add(index);
+        } else {
+          this.itemsInView.delete(index);
         }
       }
 
