@@ -6,16 +6,16 @@
         <button
           class="slider-button button-previous"
           type="button"
-          @click="handleScrollTo('left')"
           :disabled="isStart"
+          @click="handleScrollTo('left')"
         >
           <span class="sr-only">Previous</span>
         </button>
         <button
           class="slider-button button-next"
           type="button"
-          @click="handleScrollTo('right')"
           :disabled="isEnd"
+          @click="handleScrollTo('right')"
         >
           <span class="sr-only">Next</span>
         </button>
@@ -30,21 +30,6 @@
 <script>
 export default {
   name: "SliderComponent",
-  data: () => ({
-    intersectionObserver: undefined,
-    resizeObserver: undefined,
-    sliderOptions: {
-      width: undefined,
-      peak: undefined,
-      gap: undefined,
-    },
-    scrollOptions: {
-      behavior: "smooth",
-    },
-    itemsInView: new Set(),
-    isStart: true,
-    isEnd: false,
-  }),
   props: {
     width: {
       type: String,
@@ -63,6 +48,21 @@ export default {
       default: () => [],
     },
   },
+  data: () => ({
+    intersectionObserver: undefined,
+    resizeObserver: undefined,
+    sliderOptions: {
+      width: undefined,
+      peak: undefined,
+      gap: undefined,
+    },
+    scrollOptions: {
+      behavior: "smooth",
+    },
+    itemsInView: new Set(),
+    isStart: true,
+    isEnd: false,
+  }),
   computed: {
     sliderStyles({
       sliderOptions: { width = this.width, peak = this.peak, gap = this.gap },
@@ -136,7 +136,7 @@ export default {
     handleIntersectionObserve(entries) {
       const contentSlot = this.$slots.content;
 
-      entries.some(({ target, isIntersecting, intersectionRatio }) => {
+      for (const { target, isIntersecting, intersectionRatio } of entries) {
         const entry = contentSlot.find((element) => element.elm === target);
         const index = contentSlot.indexOf(entry);
 
@@ -148,7 +148,7 @@ export default {
             this.itemsInView.delete(index);
             break;
         }
-      });
+      }
 
       this.updateControls();
     },
