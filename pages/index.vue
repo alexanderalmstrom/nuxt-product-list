@@ -6,12 +6,12 @@
         {
           media: '(min-width: 320px)',
           width: '50vw',
-          peak: '2vw',
+          peek: '2vw',
         },
         {
           media: '(min-width: 1024px)',
           width: '25vw',
-          peak: '1vw',
+          peek: '1vw',
         },
       ]"
     >
