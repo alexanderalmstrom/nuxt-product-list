@@ -10,12 +10,12 @@
   margin-bottom: 0;
 }
 
-.slider-content {
+.slider-scroll {
   border-top: 1px solid var(--color-black);
   border-bottom: 1px solid var(--color-black);
 }
 
-.slider-content::-webkit-scrollbar {
+.slider-scroll::-webkit-scrollbar {
   display: none;
 }
 

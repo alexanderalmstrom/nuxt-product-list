@@ -21,7 +21,7 @@
         </button>
       </div>
     </header>
-    <div ref="content" class="slider-content">
+    <div ref="scroll" class="slider-scroll">
       <slot name="content" />
     </div>
   </section>
@@ -92,7 +92,7 @@ export default {
       }
 
       this.resizeObserver = new ResizeObserver(this.handleResizeObserve);
-      this.resizeObserver.observe(this.$refs.content);
+      this.resizeObserver.observe(this.$refs.scroll);
     },
     destroyResizeObserver() {
       if (!this.resizeObserver) {
@@ -184,9 +184,9 @@ export default {
       this.scrollToElement({ element: targetItem.elm });
     },
     scrollToStart() {
-      const contentRef = this.$refs.content;
+      const scrollRef = this.$refs.scroll;
 
-      contentRef.scrollTo({
+      scrollRef.scrollTo({
         left: 0,
         ...this.scrollOptions,
       });
@@ -198,9 +198,9 @@ export default {
       this.scrollToElement({ element: lastItem.elm });
     },
     scrollToElement({ element }) {
-      const contentRef = this.$refs.content;
+      const scrollRef = this.$refs.scroll;
 
-      contentRef.scrollTo({
+      scrollRef.scrollTo({
         left: element.offsetLeft,
         ...this.scrollOptions,
       });
@@ -216,7 +216,7 @@ export default {
 </script>
 
 <style scoped>
-.slider-content {
+.slider-scroll {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
@@ -224,11 +224,11 @@ export default {
   scroll-behavior: smooth;
 }
 
-.slider-content > * {
+.slider-scroll > * {
   scroll-snap-align: start;
 }
 
-.slider-content ::v-deep > * {
+.slider-scroll ::v-deep > * {
   scroll-snap-align: start;
   min-width: calc(var(--width) - var(--peak));
   flex-grow: 1;
