@@ -41,7 +41,7 @@ export default {
     scrollOptions: {
       behavior: "smooth",
     },
-    indexInView: [],
+    itemsInView: new Set(),
     isStart: true,
     isEnd: false,
   }),
@@ -64,9 +64,6 @@ export default {
     },
   },
   computed: {
-    uniqueSortedIndexes({ indexInView }) {
-      return [...new Set(indexInView)].sort((a, b) => a - b);
-    },
     sliderStyles({
       sliderOptions: { width = this.width, peak = this.peak, gap = this.gap },
     }) {
@@ -145,11 +142,9 @@ export default {
         );
 
         if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          this.indexInView.push(entryIndex);
+          this.itemsInView.add(entryIndex);
         } else {
-          this.indexInView = this.indexInView.filter(
-            (index) => index !== entryIndex
-          );
+          this.itemsInView.delete(entryIndex);
         }
       }
 
@@ -159,11 +154,11 @@ export default {
       let targetItem;
 
       const contentSlot = this.$slots.content;
-      const newSlideIndex = this.uniqueSortedIndexes[0];
+      const itemsInView = [...this.itemsInView].sort((a, b) => a - b);
+      const newSlideIndex = [...itemsInView][0];
 
       if (direction === "right") {
-        targetItem =
-          contentSlot[newSlideIndex + this.uniqueSortedIndexes.length];
+        targetItem = contentSlot[newSlideIndex + this.itemsInView.size];
 
         if (!targetItem) {
           this.scrollToEnd();
@@ -172,8 +167,7 @@ export default {
       }
 
       if (direction === "left") {
-        targetItem =
-          contentSlot[newSlideIndex - this.uniqueSortedIndexes.length];
+        targetItem = contentSlot[newSlideIndex - this.itemsInView.size];
 
         if (!targetItem) {
           this.scrollToStart();
@@ -208,8 +202,8 @@ export default {
     updateControls() {
       const contentSlot = this.$slots.content;
 
-      this.isStart = this.indexInView.includes(0) === true;
-      this.isEnd = this.indexInView.includes(contentSlot.length - 1) === true;
+      this.isStart = this.itemsInView.has(0);
+      this.isEnd = this.itemsInView.has(contentSlot.length - 1);
     },
   },
 };
