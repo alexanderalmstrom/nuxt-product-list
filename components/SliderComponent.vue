@@ -222,64 +222,12 @@ export default {
   --gap: 0;
 }
 
-.slider-header {
-  margin: clamp(1.5rem, 3vw, 2rem);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.slider-header h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 0;
-}
-
-.slider-controls {
-  width: 3rem;
-  position: relative;
-}
-
-.slider-button {
-  font-size: 0.8rem;
-  width: 1em;
-  height: 1em;
-  border-top-width: 0.125em;
-  border-right-width: 0.125em;
-  border-style: solid;
-  border-color: var(--color-black);
-  position: absolute;
-}
-
-.slider-button:before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(45deg) scale(2);
-}
-
-.button-next {
-  right: 0.125em;
-  transform: translate(0, -50%) rotate(45deg);
-}
-
-.button-previous {
-  left: 0.125em;
-  transform: translate(0, -50%) rotate(-135deg);
-}
-
 .slider-content {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-  border-style: solid;
-  border-color: var(--color-black);
 }
 
 .slider-content > * {
