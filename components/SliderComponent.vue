@@ -136,46 +136,48 @@ export default {
     handleIntersectionObserve(entries) {
       const contentSlot = this.$slots.content;
 
-      for (const entry of entries) {
-        const entryIndex = contentSlot.findIndex(
-          (element) => element.elm === entry.target
-        );
+      entries.some(({ target, isIntersecting, intersectionRatio }) => {
+        const entry = contentSlot.find((element) => element.elm === target);
+        const index = contentSlot.indexOf(entry);
 
-        if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-          this.itemsInView.add(entryIndex);
-        } else {
-          this.itemsInView.delete(entryIndex);
+        switch (true) {
+          case isIntersecting && intersectionRatio > 0.5:
+            this.itemsInView.add(index);
+            break;
+          default:
+            this.itemsInView.delete(index);
+            break;
         }
-      }
+      });
 
       this.updateControls();
     },
     handleScrollTo(direction) {
-      let targetItem;
+      let item;
 
       const contentSlot = this.$slots.content;
       const itemsInView = [...this.itemsInView].sort((a, b) => a - b);
       const newSlideIndex = [...itemsInView][0];
 
       if (direction === "right") {
-        targetItem = contentSlot[newSlideIndex + this.itemsInView.size];
+        item = contentSlot[newSlideIndex + this.itemsInView.size];
 
-        if (!targetItem) {
+        if (!item) {
           this.scrollToEnd();
           return;
         }
       }
 
       if (direction === "left") {
-        targetItem = contentSlot[newSlideIndex - this.itemsInView.size];
+        item = contentSlot[newSlideIndex - this.itemsInView.size];
 
-        if (!targetItem) {
+        if (!item) {
           this.scrollToStart();
           return;
         }
       }
 
-      this.scrollToElement({ element: targetItem.elm });
+      this.scrollToElement({ element: item.elm });
     },
     scrollToStart() {
       const scrollRef = this.$refs.scroll;
