@@ -48,15 +48,15 @@ export default {
   props: {
     width: {
       type: String,
-      default: undefined,
+      default: "100vw",
     },
     peak: {
       type: String,
-      default: undefined,
+      default: "0vw",
     },
     gap: {
       type: String,
-      default: undefined,
+      default: "0rem",
     },
     breakpoints: {
       type: Array,
@@ -216,12 +216,6 @@ export default {
 </script>
 
 <style scoped>
-.slider {
-  --width: 100vw;
-  --peak: 0vw;
-  --gap: 0;
-}
-
 .slider-content {
   display: flex;
   gap: var(--gap);
@@ -232,10 +226,6 @@ export default {
 
 .slider-content > * {
   scroll-snap-align: start;
-}
-
-.slider-content::-webkit-scrollbar {
-  display: none;
 }
 
 .slider-content ::v-deep > * {

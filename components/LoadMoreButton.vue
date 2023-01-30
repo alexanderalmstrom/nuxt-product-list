@@ -7,23 +7,3 @@ export default {
   name: "LoadMoreButton",
 };
 </script>
-
-<style scoped>
-.load-more-button {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-inline: 2em;
-  height: 3.5em;
-  background-color: var(--color-white);
-  box-shadow: 0 0 0 1px var(--color-black);
-  transition-property: background-color, color;
-  transition-duration: 150ms;
-  transition-timing-function: ease;
-}
-
-.load-more-button:hover {
-  background-color: var(--color-light-gray);
-}
-</style>

@@ -58,31 +58,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.product-card {
-  font-size: 0.875rem;
-  box-shadow: 0 0 0 1px var(--color-black);
-  background-color: var(--color-white);
-}
-
-.product-card-image {
-  position: relative;
-  background-color: hsla(0, 0%, 0%, 0.05);
-  overflow: hidden;
-  aspect-ratio: 5 / 7;
-}
-
-.product-card-content {
-  padding: 1.2em;
-}
-
-.product-card-name {
-  font-size: clamp(1em, 1vw, 1.125rem);
-  margin-bottom: 0.3em;
-}
-
-.product-card-price {
-  margin-bottom: 0;
-}
-</style>
