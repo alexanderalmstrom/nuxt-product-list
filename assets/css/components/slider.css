@@ -11,8 +11,16 @@
 }
 
 .slider-scroll {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
   border-top: 1px solid var(--color-black);
   border-bottom: 1px solid var(--color-black);
+}
+
+.slider-scroll > * {
+  scroll-snap-align: start;
+  flex-grow: 1;
+  flex-shrink: 0;
 }
 
 .slider-scroll::-webkit-scrollbar {
